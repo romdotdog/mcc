@@ -1,0 +1,24 @@
+{
+	"name": "mcc",
+	"version": "1.0.0",
+	"description": "performant, flexible, open source image captioning.",
+	"source": "src/index.html",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/romdotdog/mcc.git"
+	},
+	"keywords": [],
+	"author": "romdotdog",
+	"license": "UNLICENSED",
+	"bugs": {
+		"url": "https://github.com/romdotdog/mcc/issues"
+	},
+	"homepage": "https://github.com/romdotdog/mcc#readme",
+	"devDependencies": {
+		"parcel": "^2.0.0",
+		"typescript": "^4.4.4"
+	}
+}
