@@ -18,7 +18,6 @@
 	},
 	"homepage": "https://github.com/romdotdog/mcc#readme",
 	"devDependencies": {
-		"parcel": "^2.0.0",
-		"typescript": "^4.4.4"
+		"parcel": "^2.0.0"
 	}
 }
