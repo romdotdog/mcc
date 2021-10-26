@@ -18,6 +18,7 @@
 	},
 	"homepage": "https://github.com/romdotdog/mcc#readme",
 	"devDependencies": {
+		"@parcel/transformer-glsl": "^2.0.0",
 		"parcel": "^2.0.0"
 	}
 }
