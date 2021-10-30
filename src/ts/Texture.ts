@@ -14,6 +14,19 @@ export default class Texture {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 	}
 
+	static fromImageData(gl: WebGLRenderingContext, data: ImageData): Texture {
+		const t = new Texture(gl);
+
+		gl.bindTexture(gl.TEXTURE_2D, t.texture);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, data);
+
+		t.width = data.width;
+		t.height = data.height;
+		t.initialized = true;
+
+		return t;
+	}
+
 	static fromURL(gl: WebGLRenderingContext, url: string): Promise<Texture> {
 		const t = new Texture(gl);
 

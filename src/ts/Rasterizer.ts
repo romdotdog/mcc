@@ -79,7 +79,7 @@ export default class Rasterizer {
 		return new Layout(lines, y + spacing(cachedMetrics));
 	}
 
-	rasterize(text: string, maxWidth: number, font: string, align: keyof typeof alignToMult = "center"): string {
+	rasterize(text: string, maxWidth: number, font: string, align: keyof typeof alignToMult = "center"): ImageData {
 		this.x.font = font;
 
 		const { lines, height } = this.layout(text, maxWidth);
@@ -94,6 +94,6 @@ export default class Rasterizer {
 			this.x.fillText(line.text, textX, line.y);
 		}
 
-		return this.c.toDataURL();
+		return this.x.getImageData(0, 0, maxWidth, height);
 	}
 }
