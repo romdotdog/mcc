@@ -1,3 +1,8 @@
+@font-face {
+	font-family: "Futura";
+	src: url("./fonts/Futura.otf") format("opentype");
+}
+
 html,
 body {
 	margin: 0;

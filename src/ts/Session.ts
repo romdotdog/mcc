@@ -1,5 +1,5 @@
-import frag from "./shaders/plane.frag";
-import vert from "./shaders/plane.vert";
+import frag from "../shaders/plane.frag";
+import vert from "../shaders/plane.vert";
 
 import M4 from "./M4";
 import Texture from "./Texture";
@@ -97,7 +97,7 @@ export default class Session {
 		gl.enableVertexAttribArray(this.texcoordLocation);
 		gl.vertexAttribPointer(this.texcoordLocation, 2, gl.FLOAT, false, 0, 0);
 
-		let matrix = M4.orthographic(0, img.width, img.height, 0, -1, 1);
+		const matrix = M4.orthographic(0, img.width, img.height, 0, -1, 1);
 		matrix.scale(img.width, img.height, 1);
 
 		gl.uniformMatrix4fv(this.matrixLocation, false, matrix.inner);
