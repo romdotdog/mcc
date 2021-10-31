@@ -2,7 +2,9 @@ import Session from "./Session";
 import earth from "../img/earth.png";
 
 const c = document.getElementsByTagName("canvas")![0];
-const gl = c.getContext("webgl");
+const gl = c.getContext("webgl", {
+	premultipliedAlpha: false
+});
 
 const img = new Image();
 img.onload = function () {

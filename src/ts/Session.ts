@@ -16,6 +16,10 @@ export default class Session {
 
 	constructor(private gl: WebGLRenderingContext, private image: TexImageSource, private caption: string) {
 		this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, true);
+		this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+
+		this.gl.enable(this.gl.BLEND);
+		this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
 
 		this.vertShader = this.compileShader(vert, this.gl.VERTEX_SHADER);
 		this.fragShader = this.compileShader(frag, this.gl.FRAGMENT_SHADER);
@@ -70,6 +74,15 @@ export default class Session {
 		c.width = image.width;
 		c.height = image.height + topPad;
 		gl.viewport(0, 0, c.width, c.height);
+
+		// TODO: unhack
+		{
+			gl.enable(gl.SCISSOR_TEST);
+			gl.scissor(0, c.height - topPad, c.width, topPad);
+			gl.clearColor(1, 1, 1, 1);
+			gl.clear(gl.COLOR_BUFFER_BIT);
+			gl.disable(gl.SCISSOR_TEST);
+		}
 
 		const topPadRatio = (topPad / c.height) * 2;
 
