@@ -87,7 +87,7 @@ export default class Session {
 		const topPadRatio = (topPad / c.height) * 2;
 
 		const xPadding = (c.width - text.width) / c.width;
-		const yPadding = fontSize / c.width;
+		const yPadding = fontSize / c.width / 2;
 
 		const textWidth = (text.width / c.width) * 2;
 		const textHeight = (text.height / c.height) * 2;

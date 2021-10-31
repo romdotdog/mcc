@@ -51,8 +51,9 @@ export default class Rasterizer {
 
 			if (metrics.width > maxWidth && cachedMetrics) {
 				if (!firstLine) {
-					y += spacing(metrics);
+					y += spacing(cachedMetrics);
 				} else {
+					y += cachedMetrics.actualBoundingBoxAscent;
 					firstLine = false;
 				}
 
@@ -71,12 +72,13 @@ export default class Rasterizer {
 		if (!firstLine) {
 			y += spacing(cachedMetrics);
 		} else {
+			y += cachedMetrics.actualBoundingBoxAscent;
 			firstLine = false;
 		}
 
 		lines.push(new Line(line, cachedMetrics.width, y));
 
-		return new Layout(lines, y + spacing(cachedMetrics));
+		return new Layout(lines, y + cachedMetrics.actualBoundingBoxDescent);
 	}
 
 	rasterize(text: string, maxWidth: number, font: string, align: keyof typeof alignToMult = "center"): ImageData {
@@ -87,12 +89,13 @@ export default class Rasterizer {
 
 		this.x.font = font;
 		this.x.textAlign = align;
-		this.x.textBaseline = "top";
 
 		const textX = maxWidth * alignToMult[align];
 		for (const line of lines) {
 			this.x.fillText(line.text, textX, line.y);
 		}
+
+		window.open(this.c.toDataURL());
 
 		return this.x.getImageData(0, 0, maxWidth, height);
 	}
