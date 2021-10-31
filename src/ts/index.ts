@@ -9,9 +9,9 @@ const gl = c.getContext("webgl", {
 const img = new Image();
 img.onload = function () {
 	setTimeout(() => {
-		const sess = new Session(gl, img, "lmao");
+		const sess = new Session(gl, "lmao", img.width, img.height);
 		sess.renderText();
-		sess.render();
+		sess.render(sess.texture(img));
 	}, 500);
 };
 

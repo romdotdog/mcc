@@ -1,5 +1,7 @@
 import * as Geometry from "./Geometry";
 
+const identityM4 = new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+
 export default class TextureRenderer {
 	prog: WebGLProgram;
 
@@ -8,6 +10,7 @@ export default class TextureRenderer {
 	private positionLocation: number;
 	private texcoordLocation: number;
 	private textureLocation: WebGLUniformLocation;
+	private matrixLocation: WebGLUniformLocation;
 	private positionBuffer: WebGLBuffer;
 	private texcoordBuffer: WebGLBuffer;
 
@@ -34,6 +37,7 @@ export default class TextureRenderer {
 		this.texcoordLocation = gl.getAttribLocation(prog, "a_texcoord");
 
 		this.textureLocation = gl.getUniformLocation(prog, "u_texture");
+		this.matrixLocation = gl.getUniformLocation(prog, "u_matrix");
 
 		this.texcoordBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.texcoordBuffer);
@@ -44,7 +48,7 @@ export default class TextureRenderer {
 		gl.bufferData(gl.ARRAY_BUFFER, geometry, gl.STATIC_DRAW);
 	}
 
-	render(t: WebGLTexture) {
+	render(t: WebGLTexture, matrix: Float32Array = identityM4) {
 		const { gl, prog } = this;
 		gl.bindTexture(gl.TEXTURE_2D, t);
 		gl.useProgram(prog);
@@ -57,6 +61,7 @@ export default class TextureRenderer {
 		gl.enableVertexAttribArray(this.texcoordLocation);
 		gl.vertexAttribPointer(this.texcoordLocation, 2, gl.FLOAT, false, 0, 0);
 
+		gl.uniformMatrix4fv(this.matrixLocation, false, matrix);
 		gl.uniform1i(this.textureLocation, 0);
 		gl.drawArrays(gl.TRIANGLES, 0, 6);
 	}

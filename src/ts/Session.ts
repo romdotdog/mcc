@@ -10,11 +10,15 @@ export default class Session {
 
 	private vertShader: WebGLShader;
 	private fragShader: WebGLShader;
-	private mainTexture: WebGLTexture; // TODO: gif support
 
 	private mainRenderer: TextureRenderer;
 
-	constructor(private gl: WebGLRenderingContext, private image: TexImageSource, private caption: string) {
+	constructor(
+		private gl: WebGLRenderingContext,
+		private caption: string,
+		private width: number,
+		private height: number
+	) {
 		this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, true);
 		this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
 
@@ -23,8 +27,6 @@ export default class Session {
 
 		this.vertShader = this.compileShader(vert, this.gl.VERTEX_SHADER);
 		this.fragShader = this.compileShader(frag, this.gl.FRAGMENT_SHADER);
-
-		this.mainTexture = this.texture(this.image);
 	}
 
 	texture(image: TexImageSource): WebGLTexture {
@@ -63,16 +65,16 @@ export default class Session {
 	}
 
 	renderText() {
-		const { gl, image } = this;
+		const { gl, width, height } = this;
 		const c = gl.canvas;
 
-		const fontSize = image.width / 13;
-		const maxWidth = image.width * 0.92;
+		const fontSize = width / 13;
+		const maxWidth = width * 0.92;
 		const text = Session.rasterizer.rasterize(this.caption, maxWidth, fontSize + "px Futura");
 
 		const topPad = fontSize + text.height;
-		c.width = image.width;
-		c.height = image.height + topPad;
+		c.width = width;
+		c.height = height + topPad;
 		gl.viewport(0, 0, c.width, c.height);
 
 		// TODO: unhack
@@ -99,7 +101,7 @@ export default class Session {
 		this.mainRenderer = this.createTextureRenderer(Geometry.fromXYWH(-1, -1, 2, 2 - topPadRatio));
 	}
 
-	render() {
-		this.mainRenderer.render(this.mainTexture);
+	render(texture: WebGLTexture, matrix?: Float32Array) {
+		this.mainRenderer.render(texture);
 	}
 }
