@@ -95,7 +95,7 @@ export default class Rasterizer {
 			this.x.fillText(line.text, textX, line.y);
 		}
 
-		window.open(this.c.toDataURL());
+		// window.open(this.c.toDataURL());
 
 		return this.x.getImageData(0, 0, maxWidth, height);
 	}
