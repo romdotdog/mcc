@@ -1,6 +1,6 @@
 import * as Geometry from "./Geometry";
 
-const identityM4 = new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+const identityM3 = new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1]);
 
 export default class TextureRenderer {
 	prog: WebGLProgram;
@@ -48,7 +48,7 @@ export default class TextureRenderer {
 		gl.bufferData(gl.ARRAY_BUFFER, geometry, gl.STATIC_DRAW);
 	}
 
-	render(t: WebGLTexture, matrix: Float32Array = identityM4) {
+	render(t: WebGLTexture, matrix: Float32Array = identityM3) {
 		const { gl, prog } = this;
 		gl.bindTexture(gl.TEXTURE_2D, t);
 		gl.useProgram(prog);
@@ -61,7 +61,7 @@ export default class TextureRenderer {
 		gl.enableVertexAttribArray(this.texcoordLocation);
 		gl.vertexAttribPointer(this.texcoordLocation, 2, gl.FLOAT, false, 0, 0);
 
-		gl.uniformMatrix4fv(this.matrixLocation, false, matrix);
+		gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
 		gl.uniform1i(this.textureLocation, 0);
 		gl.drawArrays(gl.TRIANGLES, 0, 6);
 	}

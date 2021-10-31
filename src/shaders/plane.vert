@@ -3,9 +3,9 @@ attribute vec2 a_texcoord;
 
 varying vec2 v_texcoord;
 
-uniform mat4 u_matrix;
+uniform mat3 u_matrix;
 
 void main() {
-	gl_Position = u_matrix * a_position;
+	gl_Position = vec4(u_matrix * a_position.xyz, 1);
 	v_texcoord = a_texcoord;
 }
