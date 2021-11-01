@@ -86,8 +86,6 @@ export default class Session {
 			gl.disable(gl.SCISSOR_TEST);
 		}
 
-		const topPadRatio = (topPad / c.height) * 2;
-
 		const xPadding = (c.width - text.width) / c.width;
 		const yPadding = fontSize / c.height;
 
