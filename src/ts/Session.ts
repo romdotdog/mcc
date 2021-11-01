@@ -98,10 +98,11 @@ export default class Session {
 		const renderer = this.createTextureRenderer(geometry);
 		renderer.render(this.texture(text));
 
-		this.mainRenderer = this.createTextureRenderer(Geometry.fromXYWH(-1, -1, 2, 2 - topPadRatio));
+		gl.viewport(0, 0, width, height);
+		this.mainRenderer = this.createTextureRenderer(Geometry.fromXYWH(-1, -1, 2, 2));
 	}
 
 	render(texture: WebGLTexture, matrix?: Float32Array) {
-		this.mainRenderer.render(texture);
+		this.mainRenderer.render(texture, matrix);
 	}
 }
