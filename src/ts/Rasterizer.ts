@@ -14,9 +14,9 @@ const alignToMult = {
 	right: 1
 };
 
-// OS/2.sTypoAscender - OS/2.sTypoDescender + OS/2.sTypoLineGap
+// (OS/2.sTypoAscender - OS/2.sTypoDescender + OS/2.sTypoLineGap) / head.unitsPerEm
 const fontSpacing = {
-	Futura: 1011
+	Futura: 1.011
 };
 
 export default class Rasterizer {
@@ -96,7 +96,7 @@ export default class Rasterizer {
 		const fontConfig = `${size}px ${font}`;
 		this.x.font = fontConfig;
 
-		const { lines, height } = this.layout(text, maxWidth, fontSpacing[font] / this.pxPerEm());
+		const { lines, height } = this.layout(text, maxWidth, fontSpacing[font] * this.pxPerEm());
 		this.clear(maxWidth, height);
 
 		this.x.font = fontConfig;
