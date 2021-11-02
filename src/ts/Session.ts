@@ -72,7 +72,7 @@ export default class Session {
 		const maxWidth = width * 0.92;
 		const text = Session.rasterizer.rasterize(this.caption, maxWidth, "Futura", fontSize);
 
-		const topPad = fontSize + text.height;
+		const topPad = fontSize * 2 + text.height;
 		c.width = width;
 		c.height = height + topPad;
 		gl.viewport(0, 0, c.width, c.height);
@@ -87,7 +87,7 @@ export default class Session {
 		}
 
 		const xPadding = (c.width - text.width) / c.width;
-		const yPadding = fontSize / c.height;
+		const yPadding = (fontSize / c.height) * 2;
 
 		const textWidth = (text.width / c.width) * 2;
 		const textHeight = (text.height / c.height) * 2;

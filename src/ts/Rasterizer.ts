@@ -93,7 +93,7 @@ export default class Rasterizer {
 		size: number,
 		align: keyof typeof alignToMult = "center"
 	): ImageData {
-		const fontConfig = `${size}px ${font}`;
+		const fontConfig = `${size}pt ${font}`;
 		this.x.font = fontConfig;
 
 		const { lines, height } = this.layout(text, maxWidth, fontSpacing[font] * this.pxPerEm());
