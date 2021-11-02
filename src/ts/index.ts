@@ -15,9 +15,9 @@ Promise.all([
 	const sess = new Session(gl, "lmao", width, height);
 	sess.renderText();
 
-	const frames = decompressFrames(gif, true).map<[ParsedFrame, ImageData]>(f => [
+	const frames = decompressFrames(gif, true).map<[ParsedFrame, WebGLTexture]>(f => [
 		f,
-		new ImageData(f.patch, f.dims.width, f.dims.height)
+		sess.texture(new ImageData(f.patch, f.dims.width, f.dims.height))
 	]);
 
 	const mat = new Float32Array(9);
@@ -25,7 +25,7 @@ Promise.all([
 	const l = frames.length;
 	let i = 0;
 	function renderFrame() {
-		const [frame, img] = frames[i];
+		const [frame, texture] = frames[i];
 
 		// calculate
 
@@ -37,7 +37,7 @@ Promise.all([
 		mat[6] = (sx + tx * 2) / width - 1;
 		mat[7] = 1 - (sy + ty * 2) / height;
 
-		sess.render(sess.texture(img), mat);
+		sess.render(texture, mat);
 		i = ++i % l;
 
 		requestAnimationFrame(renderFrame);
