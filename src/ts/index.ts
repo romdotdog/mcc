@@ -12,7 +12,12 @@ Promise.all([
 	document.fonts.load("128px Futura")
 ]).then(([gif]) => {
 	const { width, height } = gif.lsd;
-	const sess = new Session(gl, "lmao", width, height);
+	const sess = new Session(
+		gl,
+		"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vel rutrum risus, eget varius leo. In eget gravida magna, ut auctor lectus. Mauris sagittis, nisl id facilisis suscipit, enim justo suscipit mauris, eget aliquet est lacus a lacus. In eu dolor ac augue dignissim malesuada at at magna. Sed gravida elit eget ex vehicula ornare.",
+		width,
+		height
+	);
 	sess.renderText();
 
 	const frames = decompressFrames(gif, true).map<[ParsedFrame, WebGLTexture]>(f => [

@@ -70,7 +70,7 @@ export default class Session {
 
 		const fontSize = width / 13;
 		const maxWidth = width * 0.92;
-		const text = Session.rasterizer.rasterize(this.caption, maxWidth, fontSize + "px Futura");
+		const text = Session.rasterizer.rasterize(this.caption, maxWidth, "Futura", fontSize);
 
 		const topPad = fontSize + text.height;
 		c.width = width;

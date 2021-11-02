@@ -14,9 +14,10 @@ const alignToMult = {
 	right: 1
 };
 
-function spacing(metrics: TextMetrics): number {
-	return (metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent) * 1.15;
-}
+// OS/2.sTypoAscender - OS/2.sTypoDescender + OS/2.sTypoLineGap
+const fontSpacing = {
+	Futura: 1011
+};
 
 export default class Rasterizer {
 	private c: HTMLCanvasElement;
@@ -34,8 +35,12 @@ export default class Rasterizer {
 		this.c.height = height;
 	}
 
+	private pxPerEm() {
+		return this.x.measureText("\u2014").width;
+	}
+
 	// TODO: Handle newlines
-	private layout(text: string, maxWidth: number): Layout {
+	private layout(text: string, maxWidth: number, spacing: number): Layout {
 		const lines = [];
 
 		let line = "";
@@ -51,7 +56,7 @@ export default class Rasterizer {
 
 			if (metrics.width > maxWidth && cachedMetrics) {
 				if (!firstLine) {
-					y += spacing(cachedMetrics);
+					y += spacing;
 				} else {
 					y += cachedMetrics.actualBoundingBoxAscent;
 					firstLine = false;
@@ -70,7 +75,7 @@ export default class Rasterizer {
 		cachedMetrics ??= this.x.measureText(line);
 
 		if (!firstLine) {
-			y += spacing(cachedMetrics);
+			y += spacing;
 		} else {
 			y += cachedMetrics.actualBoundingBoxAscent;
 			firstLine = false;
@@ -81,21 +86,26 @@ export default class Rasterizer {
 		return new Layout(lines, y + cachedMetrics.actualBoundingBoxDescent);
 	}
 
-	rasterize(text: string, maxWidth: number, font: string, align: keyof typeof alignToMult = "center"): ImageData {
-		this.x.font = font;
+	rasterize(
+		text: string,
+		maxWidth: number,
+		font: keyof typeof fontSpacing,
+		size: number,
+		align: keyof typeof alignToMult = "center"
+	): ImageData {
+		const fontConfig = `${size}px ${font}`;
+		this.x.font = fontConfig;
 
-		const { lines, height } = this.layout(text, maxWidth);
+		const { lines, height } = this.layout(text, maxWidth, fontSpacing[font] / this.pxPerEm());
 		this.clear(maxWidth, height);
 
-		this.x.font = font;
+		this.x.font = fontConfig;
 		this.x.textAlign = align;
 
 		const textX = maxWidth * alignToMult[align];
 		for (const line of lines) {
 			this.x.fillText(line.text, textX, line.y);
 		}
-
-		// window.open(this.c.toDataURL());
 
 		return this.x.getImageData(0, 0, maxWidth, height);
 	}
