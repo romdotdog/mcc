@@ -1,16 +1,10 @@
 import * as Geometry from "./Geometry";
 
 import Rasterizer from "./Rasterizer";
-import frag from "../shaders/plane.frag";
-import vert from "../shaders/plane.vert";
 import TextureRenderer from "./TextureRenderer";
 
 export default class Session {
 	private static rasterizer = new Rasterizer();
-
-	private vertShader: WebGLShader;
-	private fragShader: WebGLShader;
-
 	private mainRenderer: TextureRenderer;
 
 	constructor(
@@ -24,9 +18,6 @@ export default class Session {
 
 		this.gl.enable(this.gl.BLEND);
 		this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
-
-		this.vertShader = this.compileShader(vert, this.gl.VERTEX_SHADER);
-		this.fragShader = this.compileShader(frag, this.gl.FRAGMENT_SHADER);
 	}
 
 	texture(image: TexImageSource): WebGLTexture {
@@ -45,23 +36,8 @@ export default class Session {
 		return t;
 	}
 
-	private compileShader(src: string, type: number): WebGLShader {
-		const gl = this.gl;
-		let shader = gl.createShader(type);
-
-		gl.shaderSource(shader, src);
-		gl.compileShader(shader);
-
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-			console.log(`Error compiling ${type === gl.VERTEX_SHADER ? "vertex" : "fragment"} shader:`);
-			console.log(gl.getShaderInfoLog(shader));
-		}
-
-		return shader;
-	}
-
 	private createTextureRenderer(geometry: Float32Array) {
-		return new TextureRenderer(this.gl, this.fragShader, this.vertShader, geometry);
+		return new TextureRenderer(this.gl, geometry);
 	}
 
 	renderText() {

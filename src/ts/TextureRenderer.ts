@@ -1,9 +1,15 @@
 import * as Geometry from "./Geometry";
 
+import frag from "../shaders/plane.frag";
+import vert from "../shaders/plane.vert";
+
 const identityM3 = new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1]);
 
 export default class TextureRenderer {
 	prog: WebGLProgram;
+
+	private static fragShader: WebGLShader;
+	private static vertShader: WebGLShader;
 
 	private gl: WebGLRenderingContext;
 
@@ -14,12 +20,14 @@ export default class TextureRenderer {
 	private positionBuffer: WebGLBuffer;
 	private texcoordBuffer: WebGLBuffer;
 
-	constructor(gl: WebGLRenderingContext, frag: WebGLShader, vert: WebGLShader, geometry: Float32Array) {
+	constructor(gl: WebGLRenderingContext, geometry: Float32Array) {
 		this.gl = gl; // bug
 
+		if (TextureRenderer.fragShader === undefined) this.compileShaders();
+
 		this.prog = gl.createProgram();
-		gl.attachShader(this.prog, frag);
-		gl.attachShader(this.prog, vert);
+		gl.attachShader(this.prog, TextureRenderer.fragShader);
+		gl.attachShader(this.prog, TextureRenderer.vertShader);
 
 		gl.linkProgram(this.prog);
 
@@ -29,6 +37,26 @@ export default class TextureRenderer {
 		}
 
 		this.assignBuffers(geometry);
+	}
+
+	private compileShaders() {
+		TextureRenderer.fragShader = this.compileShader(frag, this.gl.FRAGMENT_SHADER);
+		TextureRenderer.vertShader = this.compileShader(vert, this.gl.VERTEX_SHADER);
+	}
+
+	private compileShader(src: string, type: number): WebGLShader {
+		const gl = this.gl;
+		let shader = gl.createShader(type);
+
+		gl.shaderSource(shader, src);
+		gl.compileShader(shader);
+
+		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+			console.log(`Error compiling ${type === gl.VERTEX_SHADER ? "vertex" : "fragment"} shader:`);
+			console.log(gl.getShaderInfoLog(shader));
+		}
+
+		return shader;
 	}
 
 	private assignBuffers(geometry: Float32Array) {
