@@ -1,6 +1,6 @@
 import Session from "./Session";
 import { decompressFrames, ParsedFrame, parseGIF } from "gifuct-js";
-import earth from "../img/earth.gif";
+import earth from "../img/pug.gif";
 
 const c = document.getElementsByTagName("canvas")![0];
 const gl = c.getContext("webgl", { preserveDrawingBuffer: true });
@@ -29,7 +29,8 @@ Promise.all([
 
 	const l = frames.length;
 	let i = 0;
-	function renderFrame() {
+	function renderFrame(disposalType: number) {
+		sess.dispose(disposalType);
 		const [frame, texture] = frames[i];
 
 		// calculate
@@ -45,8 +46,8 @@ Promise.all([
 		sess.render(texture, mat);
 		i = ++i % l;
 
-		requestAnimationFrame(renderFrame);
+		requestAnimationFrame(() => renderFrame(frame.disposalType));
 	}
 
-	requestAnimationFrame(renderFrame);
+	requestAnimationFrame(() => renderFrame(0));
 });

@@ -83,7 +83,7 @@ export default class Rasterizer {
 
 		lines.push(new Line(line, cachedMetrics.width, y));
 
-		return new Layout(lines, y + cachedMetrics.actualBoundingBoxDescent);
+		return new Layout(lines, y + cachedMetrics.actualBoundingBoxDescent + 4);
 	}
 
 	rasterize(
@@ -104,7 +104,7 @@ export default class Rasterizer {
 
 		const textX = maxWidth * alignToMult[align];
 		for (const line of lines) {
-			this.x.fillText(line.text, textX, line.y);
+			this.x.fillText(line.text, textX, line.y + 2);
 		}
 
 		return this.x.getImageData(0, 0, maxWidth, height);
