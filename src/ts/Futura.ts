@@ -4,13 +4,8 @@ import { TextRenderer } from "./TextRenderer";
 import TextureRenderer from "./TextureRenderer";
 
 export default class Futura extends Session {
-	constructor(
-        gl: WebGLRenderingContext,
-		width: number,
-		height: number,
-        caption: string
-    ) {
-        super(gl, width, height);
+	constructor(gl: WebGLRenderingContext, width: number, height: number, caption: string) {
+		super(gl, width, height);
 		const c = gl.canvas;
 
 		const fontSize = width / 13;

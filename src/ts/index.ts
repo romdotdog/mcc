@@ -14,12 +14,7 @@ Promise.all([
 	document.fonts.load("128px Futura")
 ]).then(([gif]) => {
 	const { width, height } = gif.lsd;
-	const sess = new Impact(
-		gl,
-		width,
-		height,
-        "lmao owned"
-	);
+	const sess = new Impact(gl, width, height, "lmao owned");
 
 	const frames = decompressFrames(gif, true).map<[ParsedFrame, WebGLTexture]>(f => [
 		f,

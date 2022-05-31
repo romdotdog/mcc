@@ -5,11 +5,7 @@ export default class Session {
 	protected static rasterizer = new Rasterizer();
 	protected mainRenderer: TextureRenderer;
 
-	constructor(
-		protected gl: WebGLRenderingContext,
-		protected width: number,
-		protected height: number
-	) {
+	constructor(protected gl: WebGLRenderingContext, protected width: number, protected height: number) {
 		this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, true);
 		this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
 		this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
@@ -32,10 +28,8 @@ export default class Session {
 	}
 
 	dispose(disposalType: number) {
-		if (disposalType == 0 || disposalType == 1)
-			this.gl.enable(this.gl.BLEND);
-		else 
-			this.gl.disable(this.gl.BLEND);
+		if (disposalType == 0 || disposalType == 1) this.gl.enable(this.gl.BLEND);
+		else this.gl.disable(this.gl.BLEND);
 	}
 
 	render(texture: WebGLTexture, matrix?: Float32Array) {

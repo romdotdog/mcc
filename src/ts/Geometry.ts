@@ -10,4 +10,3 @@ export function fromXYWH(x1: number, y1: number, width: number, height: number) 
 export function fromTo(x1: number, y1: number, x2: number, y2: number) {
 	return new Float32Array([x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2]);
 }
-
