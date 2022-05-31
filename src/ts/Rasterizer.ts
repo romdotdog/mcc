@@ -16,7 +16,8 @@ const alignToMult = {
 
 // (OS/2.sTypoAscender - OS/2.sTypoDescender + OS/2.sTypoLineGap) / head.unitsPerEm
 const fontSpacing = {
-	Futura: 1.011
+	Futura: 1.011,
+    Impact: 1.07
 };
 
 export default class Rasterizer {
